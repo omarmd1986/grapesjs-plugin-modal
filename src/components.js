@@ -54,16 +54,22 @@ export default (editor, config = {}) => {
             script: function () {
                 (function (d, s, id) {
                     var js, fjs = d.getElementsByTagName(s)[0];
-                    if (d.getElementById(id)) { return; }
+                    if (d.getElementById(id)) {
+                        return;
+                    }
                     js = d.createElement(s);
                     js.id = id;
                     js.onload = function () {
                         (function (d, s, id) {
                             var js, fjs = d.getElementsByTagName(s)[0];
-                            if (d.getElementById(id)) {return;}
+                            if (d.getElementById(id)) {
+                                return;
+                            }
                             js = d.createElement(s);
                             js.id = id;
-                            js.onload = function () { console.debug('Both plugin loaded');};
+                            js.onload = function () {
+                                console.debug('Both plugin loaded');
+                            };
                             js.src = '{[ bootstrapScript ]}';
                             fjs.parentNode.insertBefore(js, fjs);
                         }(d, 'script', 'grapesjs-modal-bootstrap'));
@@ -86,6 +92,18 @@ export default (editor, config = {}) => {
     });
 
     var view = linkView.extend({
+        
+        events: {
+            click: 'click'
+        },
+        
+        click: function(event){
+            event.preventDefault();
+            event.stopPropagation();
+            
+            editor.select(this.model);
+        },
+        
         init: function () {
             let model = this.model;
 
