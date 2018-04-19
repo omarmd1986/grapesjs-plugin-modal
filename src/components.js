@@ -1,12 +1,13 @@
-import {modal} from './consts';
-
 export default (editor, config = {}) => {
     const domc = editor.DomComponents;
     const linkType = domc.getType('link');
     const linkModel = linkType.model;
     const linkView = linkType.view;
 
-    let traits = [];
+    const defaultType = domc.getType('default');
+    const defaultModel = defaultType.model;
+
+    let traits = defaultModel.prototype.defaults.traits.slice(0);
     traits.push({
         type: 'select',
         label: 'Type',
@@ -40,49 +41,42 @@ export default (editor, config = {}) => {
             droppable: false,
 
             type: 'modal',
-            tagName: 'a',
+            tagName: 'modal',
 
             traits: traits,
 
             btnStyle: 'btn-primary',
-            btnSize: 'btn-normal',
-
+            btnSize: 'btn-lg',
+            
+            'bootstrapScript': config.modalBootstrap,
+            'jqueryScript': config.modalJquery,
+            
             script: function () {
-                var el = this;
-
-                console.log(el);
-
-                var ready = function () {
-                    console.log('loaded JS completed');
+                if ("undefined" !== typeof jQuery && (typeof $().modal !== 'function')) {
+                    return;
+                }
+                
+                var includeJs = function(src, cb){
+                    var script = document.createElement('script');
+                    script.src = src;
+                    script.onload = cb;
+                    document.head.appendChild(script);
                 };
-
-                (function () {
-                    if ("undefined" !== typeof jQuery && (typeof $().modal !== 'function')) {
-                        return;
-                    }
-
-                    var jQueryscript = document.createElement('script');
-                    jQueryscript.type = 'text/javascript';
-                    jQueryscript.charset = 'utf-8';
-                    jQueryscript.defer = true;
-                    jQueryscript.async = true;
-                    jQueryscript.onload = function () {
-                        ready();
-                    };
-                    jQueryscript.text = `${config.script}`;
-                    document.head.appendChild(jQueryscript);
-                })();
+                
+                var includeBootstrap = function(){
+                    const src = '{[ bootstrapScript ]}';
+                    includeJs(src);
+                };
+                
+                const src = '{[ jqueryScript ]}';
+                includeJs(src, includeBootstrap);
             }
         })
     }, {
         isComponent(el) {
-            var result = linkModel.isComponent(el);
-
-            if (!result || result === '') {
-                return result;
-            }
-
-            if (el.tagName === 'A' && el.className.includes('btn') && el.getAttribute('data-toggle') === 'modal') {
+            var result = '';
+            
+            if (el.tagName === 'MODAL') {
                 result = {type: 'modal'};
             }
 
@@ -94,26 +88,44 @@ export default (editor, config = {}) => {
         init: function () {
             let model = this.model;
 
-            this.listenTo(model, 'change:btnStyle', this.updateButton);
-            this.listenTo(model, 'change:btnSize', this.updateButton);
+            this.listenTo(model, 'change:btnStyle change:btnSize change:attributes', this.updateModal);
 
             // To update the view
-            this.updateButton();
+            this.updateModal();
         },
 
-        updateButton: function () {
+        updateModal: function () {
+            var el = this.el;
+            const id = el.getAttribute('id');
+            
+            if (!id) { return; }
+            
+            var model = this.model;
+            
+            // Append new components
             const style = this.model.get('btnStyle');
             const size = this.model.get('btnSize');
 
             const _class = `btn ${style} ${size}`;
+            model.components(`<a class="${_class}" data-toggle="modal" data-target="${id}-modal">Launch modal</a>`);
 
-            this.model.setClass(_class);
+            var create = function(html){
+                var tpl = document.createElement('template');
+                tpl.innerHTML = html.trim();
+                return tpl.content.firstChild;
+            };
 
-            // update css class on element
-            var el = this.el;
-            el.setAttribute('class', _class);
-
-            this.el = el;
+            var createModal = function(){
+                var _modal = create(config.modalHtml);
+                _modal.setAttribute('id', `${id}-modal`);
+                var container = document.createElement('div');
+                container.appendChild(_modal);
+                return container.innerHTML;
+            };
+                        
+            var _modal = createModal();
+            
+            model.append(_modal);
         }
     });
 

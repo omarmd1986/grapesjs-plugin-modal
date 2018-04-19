@@ -1,21 +1,25 @@
 import grapesjs from 'grapesjs';
 import loadComponents from './components';
 import loadBlocks from './blocks';
-import {script, style} from './consts';
+import {style, modal, jquery, bootstrap, micromodal} from './consts';
 
 export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
     const options = {...{
                 category: `Advanced`,
-
-                modalScript: `${script}`,
-
-                modalStyle: `<style>${style}</style>`
+                
+                modalStyle: `<style>${style}</style>`,
+                
+                modalHtml: `${modal}`,
+                
+                modalJquery: `${jquery}`,
+                
+                modalBootstrap: `${bootstrap}`
         }, ...opts};
 
-  // Add components
-  loadComponents(editor, options);
+    // Add components
+    loadComponents(editor, options);
 
-  // Add blocks
-  loadBlocks(editor, options);
-
+    // Add blocks
+    loadBlocks(editor, options);
+    
 });

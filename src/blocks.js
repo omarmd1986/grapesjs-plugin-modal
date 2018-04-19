@@ -5,7 +5,7 @@ export default (editor, config = {}) => {
     bm.add('modal', {
 
         label: 'Modal',
-        content: `${config.modalStyle}<a class="btn" data-toggle="modal">Launch modal</a>`,
+        content: `${config.modalStyle}<modal data-toggle="modal"></modal>`,
         category: config.category,
         attributes: {
             class: 'gjs-fonts gjs-f-h1p'
