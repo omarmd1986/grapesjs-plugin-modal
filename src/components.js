@@ -47,35 +47,36 @@ export default (editor, config = {}) => {
 
             btnStyle: 'btn-primary',
             btnSize: 'btn-lg',
-            
+
             'bootstrapScript': config.modalBootstrap,
             'jqueryScript': config.modalJquery,
-            
+
             script: function () {
-                if ("undefined" !== typeof jQuery && (typeof $().modal !== 'function')) {
-                    return;
-                }
-                
-                var includeJs = function(src, cb){
-                    var script = document.createElement('script');
-                    script.src = src;
-                    script.onload = cb;
-                    document.head.appendChild(script);
-                };
-                
-                var includeBootstrap = function(){
-                    const src = '{[ bootstrapScript ]}';
-                    includeJs(src);
-                };
-                
-                const src = '{[ jqueryScript ]}';
-                includeJs(src, includeBootstrap);
+                (function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) { return; }
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.onload = function () {
+                        (function (d, s, id) {
+                            var js, fjs = d.getElementsByTagName(s)[0];
+                            if (d.getElementById(id)) {return;}
+                            js = d.createElement(s);
+                            js.id = id;
+                            js.onload = function () { console.debug('Both plugin loaded');};
+                            js.src = '{[ bootstrapScript ]}';
+                            fjs.parentNode.insertBefore(js, fjs);
+                        }(d, 'script', 'grapesjs-modal-bootstrap'));
+                    };
+                    js.src = '{[ jqueryScript ]}';
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'grapesjs-modal-jquery'));
             }
         })
     }, {
         isComponent(el) {
             var result = '';
-            
+
             if (el.tagName === 'MODAL') {
                 result = {type: 'modal'};
             }
@@ -97,34 +98,36 @@ export default (editor, config = {}) => {
         updateModal: function () {
             var el = this.el;
             const id = el.getAttribute('id');
-            
-            if (!id) { return; }
-            
+
+            if (!id) {
+                return;
+            }
+
             var model = this.model;
-            
+
             // Append new components
             const style = this.model.get('btnStyle');
             const size = this.model.get('btnSize');
 
             const _class = `btn ${style} ${size}`;
-            model.components(`<a class="${_class}" data-toggle="modal" data-target="${id}-modal">Launch modal</a>`);
+            model.components(`<a class="${_class}" data-toggle="modal" data-target="#${id}-modal">Launch modal</a>`);
 
-            var create = function(html){
+            var create = function (html) {
                 var tpl = document.createElement('template');
                 tpl.innerHTML = html.trim();
                 return tpl.content.firstChild;
             };
 
-            var createModal = function(){
+            var createModal = function () {
                 var _modal = create(config.modalHtml);
                 _modal.setAttribute('id', `${id}-modal`);
                 var container = document.createElement('div');
                 container.appendChild(_modal);
                 return container.innerHTML;
             };
-                        
+
             var _modal = createModal();
-            
+
             model.append(_modal);
         }
     });
