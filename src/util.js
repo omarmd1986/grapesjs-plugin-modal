@@ -46,12 +46,9 @@ Util.prototype.openModal = function (id) {
     var self = this;
 
     var fn = function (event) {
-        console.log(this, event, id);
         if (event.target.id === id) {
-            console.log('inside');
             // close the modal
             self.closeModal(id);
-            
             this.removeEventListener('click', fn);
         }
     };
@@ -65,7 +62,6 @@ Util.prototype.openModal = function (id) {
 };
 
 Util.prototype.closeModal = function (id) {
-    console.log(`close modal`)
     let modal = this.getElementById(id);
 
     if (!modal) {

@@ -116,8 +116,9 @@ export default (editor, config = {}) => {
                 return;
             }
             const modalId = `${id}-modal`;
+            const triggerId = `${id}-trigger`;
 
-            if (event.target.id !== modalId) {
+            if (event.target.id === id || event.target.id === triggerId) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -149,31 +150,44 @@ export default (editor, config = {}) => {
             }
 
             var model = this.model;
+            var currentModal = null;
+            try {
+                currentModal = model.get('components').at(1);
+            } catch (e) {
+                currentModal = null;
+            }
 
             // Append new components
             const style = this.model.get('btnStyle');
             const size = this.model.get('btnSize');
 
+            const modalId = `${id}-modal`;
+            const triggerId = `${id}-trigger`;
+
             const _class = `btn ${style} ${size}`;
-            model.components(`<a class="${_class}" data-toggle="modal" data-target="#${id}-modal">Launch modal</a>`);
+            model.components(`<a id="${triggerId}" class="${_class}" data-toggle="modal" data-target="#${modalId}">Launch modal</a>`);
 
-            var create = function (html) {
-                var tpl = document.createElement('template');
-                tpl.innerHTML = html.trim();
-                return tpl.content.firstChild;
-            };
+            if (currentModal) {
+                model.append(currentModal);
+            } else {
+                var create = function (html) {
+                    var tpl = document.createElement('template');
+                    tpl.innerHTML = html.trim();
+                    return tpl.content.firstChild;
+                };
 
-            var createModal = function () {
-                var _modal = create(config.modalHtml);
-                _modal.setAttribute('id', `${id}-modal`);
-                var container = document.createElement('div');
-                container.appendChild(_modal);
-                return container.innerHTML;
-            };
+                var createModal = function () {
+                    var _modal = create(config.modalHtml);
+                    _modal.setAttribute('id', `${modalId}`);
+                    var container = document.createElement('div');
+                    container.appendChild(_modal);
+                    return container.innerHTML;
+                };
 
-            var _modal = createModal();
+                var _modal = createModal();
 
-            model.append(_modal);
+                model.append(_modal);
+            }
         }
     });
 
