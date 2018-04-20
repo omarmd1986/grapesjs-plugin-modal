@@ -142,8 +142,7 @@ export default (editor, config = {}) => {
         },
 
         updateModal: function () {
-            var el = this.el;
-            const id = el.getAttribute('id');
+            const id = this.model.getId();
 
             if (!id) {
                 return;
