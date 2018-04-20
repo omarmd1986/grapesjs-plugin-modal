@@ -2,12 +2,9 @@ import {util as Util} from '../util';
 
 export default (editor, config = {}) => {
     const domc = editor.DomComponents;
-    const linkType = domc.getType('link');
-    const linkModel = linkType.model;
-    const linkView = linkType.view;
-
     const defaultType = domc.getType('default');
     const defaultModel = defaultType.model;
+    const defaultView = defaultType.view;
 
     let traits = defaultModel.prototype.defaults.traits.slice(0);
     traits.push({
@@ -37,8 +34,8 @@ export default (editor, config = {}) => {
         ]
     });
 
-    var model = linkModel.extend({
-        defaults: Object.assign({}, linkModel.prototype.defaults, {
+    var model = defaultModel.extend({
+        defaults: Object.assign({}, defaultModel.prototype.defaults, {
             // Can't drop other elements inside it
             droppable: false,
 
@@ -93,7 +90,7 @@ export default (editor, config = {}) => {
         }
     });
 
-    var view = linkView.extend({
+    var view = defaultView.extend({
 
         events: {
             dblclick: 'dblclick',
@@ -135,13 +132,7 @@ export default (editor, config = {}) => {
         init: function () {
             let model = this.model;
 
-            this.listenTo(model, 'change:btnStyle change:btnSize change', this.updateModal);
-
-            var self = this;
-            
-            setTimeout(function(){
-                self.model.trigger('change')
-            }, 1000);
+            this.listenTo(model, 'change:btnStyle change:btnSize change:attributes', this.updateModal);
         },
 
         updateModal: function () {
