@@ -25,5 +25,4 @@ export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
 
     // Add blocks
     loadBlocks(editor, options);
-    
 });

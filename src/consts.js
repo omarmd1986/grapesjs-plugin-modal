@@ -11,8 +11,8 @@ export const
                                     <p>Message text</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary" id="dont-show-again">Submit</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><div>Cancel</div></button>
+                                    <button type="submit" class="btn btn-primary" id="dont-show-again"><div>Submit</div></button>
                                 </div>
                             </form>
                         </div>

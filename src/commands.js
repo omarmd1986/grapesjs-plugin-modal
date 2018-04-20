@@ -1,46 +1,43 @@
+import {util as Util} from './util';
+
 export default (editor, config = {}) => {
     var commands = editor.Commands;
     
-    var getDocument = function(){
-        var iframes = document.querySelectorAll("iframe.gjs-frame");
-        
-        if(iframes.length < 1){
-            return document;
-        }
-        
-        return iframes[0].contentDocument || iframes[0].contentWindow.document;
-    };
-    
-    var getElementById = function(id){
-        const doc = getDocument();
-        if(!doc){
-            console.error(`Document not found`);
-        }
-        return doc.getElementById(id);
-    };
-    
-    
     commands.add('open-modal', {
-        run: function (editor, senser, params) {
+        run: function (editor, sender, params) {
+            const id = params.id;
+            if(!id){
+                console.error('The ID is missing');
+                return;
+            }
+            const isOpen = Util.isModalOpen(id);
+            if( isOpen === true ){
+                return true;
+            }
+            
+            Util.openModal(id);
+            
+            return true;
+        }
+    });
+    
+    commands.add('close-modal', {
+        run: function (editor, sender, params) {
             const id = params.id;
             if(!id){
                 console.error('The ID is missing');
                 return;
             }
             
-            let modal = getElementById(id);
-
-            if(!modal){
-                console.error(`Modal ${id} not found.`);
-                return;
+            const isOpen = Util.isModalOpen(id);
+            
+            if( isOpen !== true ){
+                return true;
             }
             
-            modal.setAttribute('class', `modal fade in`);
-            modal.setAttribute('style', `display: block;`);
+            Util.closeModal(id);
             
-            console.log(`Modal ${id} pop ups`);
-        },
-        stop: function (e, s) {
+            return true;
         }
     });
 }
