@@ -135,13 +135,13 @@ export default (editor, config = {}) => {
         init: function () {
             let model = this.model;
 
-            this.listenTo(model, 'change:btnStyle change:btnSize change:attributes', this.updateModal);
+            this.listenTo(model, 'change:btnStyle change:btnSize change', this.updateModal);
 
             var self = this;
             
             setTimeout(function(){
-                self.model.trigger('change:btnSize')
-            }, 100);
+                self.model.trigger('change')
+            }, 1000);
         },
 
         updateModal: function () {
