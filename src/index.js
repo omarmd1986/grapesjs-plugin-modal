@@ -1,18 +1,28 @@
 import grapesjs from 'grapesjs';
 import loadComponents from './components';
+import loadCommands from './commands';
 import loadBlocks from './blocks';
+import {style, modal, jquery, bootstrap, micromodal} from './consts';
 
-export default grapesjs.plugins.add('YOUR-PLUGIN-NAME', (editor, opts = {}) => {
-  const options = { ...{
-    // default options
-  },  ...opts };
+export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
+    const options = {...{
+                category: `Advanced`,
+                
+                modalStyle: `<style>${style}</style>`,
+                
+                modalHtml: `${modal}`,
+                
+                modalJquery: `${jquery}`,
+                
+                modalBootstrap: `${bootstrap}`
+        }, ...opts};
 
-  // Add components
-  loadComponents(editor, options);
+    // Add components
+    loadCommands(editor, options);
+    
+    // Add components
+    loadComponents(editor, options);
 
-  // Add blocks
-  loadBlocks(editor, options);
-
-  // TODO Remove
-  editor.on('load', () => editor.addComponents(`<div style="margin:0 100px; padding:25px;">Content loaded from the plugin</div>`))
+    // Add blocks
+    loadBlocks(editor, options);
 });
