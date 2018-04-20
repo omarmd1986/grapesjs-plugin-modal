@@ -133,6 +133,8 @@ export default (editor, config = {}) => {
             let model = this.model;
 
             this.listenTo(model, 'change:btnStyle change:btnSize change:attributes', this.updateModal);
+            
+            this.updateModal();
         },
 
         updateModal: function () {
