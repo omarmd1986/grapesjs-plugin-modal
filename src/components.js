@@ -92,18 +92,27 @@ export default (editor, config = {}) => {
     });
 
     var view = linkView.extend({
-        
+
         events: {
             click: 'click'
         },
-        
-        click: function(event){
+
+        click: function (event) {
             event.preventDefault();
             event.stopPropagation();
-            
+
             editor.select(this.model);
+
+            var el = this.el;
+            const id = el.getAttribute('id');
+
+            if (!id) {
+                return;
+            }
+
+            editor.runCommand('open-modal', {id: `${id}-modal`});
         },
-        
+
         init: function () {
             let model = this.model;
 
