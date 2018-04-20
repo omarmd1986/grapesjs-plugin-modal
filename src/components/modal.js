@@ -137,8 +137,11 @@ export default (editor, config = {}) => {
 
             this.listenTo(model, 'change:btnStyle change:btnSize change:attributes', this.updateModal);
 
-            // To update the view
-            this.updateModal();
+            var self = this;
+            
+            setTimeout(function(){
+                self.model.trigger('change:btnSize')
+            }, 50);
         },
 
         updateModal: function () {
