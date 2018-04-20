@@ -141,12 +141,12 @@ export default (editor, config = {}) => {
             
             setTimeout(function(){
                 self.model.trigger('change:btnSize')
-            }, 50);
+            }, 100);
         },
 
         updateModal: function () {
             const id = this.model.getId();
-
+            console.log(`Modal plugin => ${id}`);
             if (!id) {
                 return;
             }
