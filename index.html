@@ -6,6 +6,7 @@
         <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet">
         <script src="https://unpkg.com/grapesjs"></script>
         <script src="/node_modules/grapesjs-blocks-basic/dist/grapesjs-blocks-basic.min.js"></script>
+        <script src="/node_modules/grapesjs-plugin-forms/dist/grapesjs-plugin-forms.min.js"></script>
         <script src="dist/grapesjs-plugin-modal.min.js"></script>
         <style>
             body,
@@ -31,7 +32,7 @@
                 container: '#gjs',
                 fromElement: true,
 
-                plugins: ['gjs-blocks-basic', 'gjs-modal'],
+                plugins: ['gjs-blocks-basic', 'gjs-plugin-forms', 'gjs-modal'],
                 pluginsOpts: {
                     'gjs-modal': {},
                     'gjs-blocks-basic': {

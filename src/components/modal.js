@@ -51,6 +51,28 @@ export default (editor, config = {}) => {
             'jqueryScript': config.modalJquery,
 
             script: function () {
+                var forms = Array.from(this.getElementsByTagName('form'));
+                // Form container
+                var formContainer = forms.shift();
+                for (var i = 0; i < forms.length; i++) {
+                    forms[i].addEventListener('submit', e => e.preventDefault());
+                }
+                var submits = Array.from(this.getElementsByTagName('button'));
+                // Form container
+                submits = submits.filter(s => s.getAttribute('type') === 'submit');
+                var submit = submits.pop();
+                if (submit && formContainer) {
+                    var _hiddenSubmit = document.createElement('button');
+                    _hiddenSubmit.setAttribute('type', 'submit');
+                    _hiddenSubmit.style.display = 'none';
+                    formContainer.prepend(_hiddenSubmit);
+                    
+                    submit.addEventListener('click', function(e){
+                        e.preventDefault();
+                        _hiddenSubmit.click();
+                    });
+                }
+
                 (function (d, s, id) {
                     var js, fjs = d.getElementsByTagName(s)[0];
                     if (d.getElementById(id)) {
@@ -163,7 +185,7 @@ export default (editor, config = {}) => {
 
             const modalId = `${id}-modal`;
             const triggerId = `${id}-trigger`;
-            
+
             // Append new components
             if (currentTrigger) {
                 var _attr = currentTrigger.get('attributes');
@@ -171,7 +193,7 @@ export default (editor, config = {}) => {
                 _attr['data-toggle'] = `modal`;
                 _attr['data-targer'] = `#${modalId}`;
                 currentTrigger.set('attributes', _attr);
-                
+
                 currentTrigger.addClass(`btn`);
                 currentTrigger.addClass(style);
                 currentTrigger.addClass(size);
