@@ -1,5 +1,9 @@
 var Util = function () {};
 
+/**
+ * Return the iframe's documents
+ * @returns {document}
+ */
 Util.prototype.getDocument = function () {
     var iframes = document.querySelectorAll("iframe.gjs-frame");
     if (iframes.length < 1) {
@@ -9,6 +13,11 @@ Util.prototype.getDocument = function () {
     return iframes[0].contentDocument || iframes[0].contentWindow.document;
 };
 
+/**
+ * Return the element from the iframe's documents
+ * @param {string} id
+ * @returns {NodeElement}
+ */
 Util.prototype.getElementById = function (id) {
     const doc = this.getDocument();
     if (!doc) {
@@ -17,6 +26,31 @@ Util.prototype.getElementById = function (id) {
     }
     return doc.getElementById(id);
 };
+
+/**
+ * Create an element from str
+ * @param {string} html
+ * @returns {NodeElement}
+ */
+Util.prototype.createElement = function(html){
+    let template = document.createElement('template');
+    template.innerHTML = html.trim();
+    return template.content.firstChild;
+};
+
+/**
+ * 
+ * @param {NodeElement} nodeElement
+ * @returns {string}
+ */
+Util.prototype.toString = function(nodeElement){
+    let container = document.createElement('div');
+    container.appendChild(nodeElement);
+    return container.innerHTML;
+};
+
+
+/*Modals helpers*/
 
 Util.prototype.isModalOpen = function (id) {
     const doc = this.getDocument();

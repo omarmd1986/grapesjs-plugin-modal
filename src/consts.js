@@ -5,14 +5,14 @@ export const
                             <form action="" method="POST">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">X</span><span class="sr-only">Close</span></button>
-                                    <h4 class="modal-title" id="important-msg-label">Message Title!</h4>
+                                    <h4 class="modal-title">Message Title!</h4>
                                 </div>
                                 <div class="modal-body">
                                     <p>Message text</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"><div>Cancel</div></button>
-                                    <button type="submit" class="btn btn-primary" id="dont-show-again"><div>Submit</div></button>
+                                    <button type="submit" class="btn btn-primary"><div>Submit</div></button>
                                 </div>
                             </form>
                         </div>
