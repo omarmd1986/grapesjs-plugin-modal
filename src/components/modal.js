@@ -187,6 +187,7 @@ export default (editor, config = {}) => {
             const triggerId = `${id}-trigger`;
 
             // Append new components
+            const _class = `btn ${style} ${size}`;
             if (currentTrigger) {
                 var _attr = currentTrigger.get('attributes');
                 _attr.id = triggerId;
@@ -194,9 +195,7 @@ export default (editor, config = {}) => {
                 _attr['data-targer'] = `#${modalId}`;
                 currentTrigger.set('attributes', _attr);
 
-                currentTrigger.addClass(`btn`);
-                currentTrigger.addClass(style);
-                currentTrigger.addClass(size);
+                currentTrigger.setClass(_class);
 
                 model.components(currentTrigger);
             } else {

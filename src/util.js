@@ -97,8 +97,7 @@ Util.prototype.openModal = function (id) {
     };
 
     modal.addEventListener('click', fn);
-
-    modal.setAttribute('class', `modal fade in`);
+    modal.setAttribute('class', `modal`);
     modal.setAttribute('style', `display: block;`);
 
     console.debug(`Modal ${id} pop ups`);
