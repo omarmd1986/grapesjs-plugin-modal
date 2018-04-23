@@ -32,7 +32,7 @@ Util.prototype.getElementById = function (id) {
  * @param {string} html
  * @returns {NodeElement}
  */
-Util.prototype.createElement = function(html){
+Util.prototype.createElement = function (html) {
     let template = document.createElement('template');
     template.innerHTML = html.trim();
     return template.content.firstChild;
@@ -43,7 +43,7 @@ Util.prototype.createElement = function(html){
  * @param {NodeElement} nodeElement
  * @returns {string}
  */
-Util.prototype.toString = function(nodeElement){
+Util.prototype.toString = function (nodeElement) {
     let container = document.createElement('div');
     container.appendChild(nodeElement);
     return container.innerHTML;
@@ -76,8 +76,17 @@ Util.prototype.openModal = function (id) {
         console.error(`Modal ${id} not found.`);
         return;
     }
-    
+
     var self = this;
+    
+    var form = modal.getElementsByTagName('form')[0];
+
+    if (form) {
+        // Prevent the modal closes up
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+        });
+    }
 
     var fn = function (event) {
         if (event.target.id === id) {
@@ -105,7 +114,7 @@ Util.prototype.closeModal = function (id) {
 
     modal.setAttribute('class', `modal fade`);
     modal.setAttribute('style', `display: none;`);
-    
+
     console.debug(`Modal ${id} close ups`);
 };
 
