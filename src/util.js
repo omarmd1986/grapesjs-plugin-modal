@@ -70,6 +70,10 @@ Util.prototype.isModalOpen = function (id) {
 };
 
 Util.prototype.openModal = function (id) {
+    if(id.charAt(0) === '#'){
+        // Remove the # at the beginning
+        id = id.substr(1);
+    }
     let modal = this.getElementById(id);
 
     if (!modal) {
