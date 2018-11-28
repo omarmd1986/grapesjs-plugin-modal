@@ -35,6 +35,33 @@ export default (editor, config = {}) => {
     });
 
     var model = defaultModel.extend({
+
+        initToolbar(...args) {
+            defaultModel.prototype.initToolbar.apply(this, args);
+
+            var self = this;
+
+            var el = self.getEl();
+
+            if (!el) {
+                return;
+            }
+
+            const id = el.getAttribute('id');
+            const modalId = `${id}-modal`;
+
+            var tb = this.get('toolbar');
+
+            tb.push({
+                attributes: {class: 'fa fa-external-link'},
+                command: () => {
+                    editor.runCommand('open-modal', {id: modalId});
+                }
+            });
+
+            this.set('toolbar', tb);
+        },
+
         defaults: Object.assign({}, defaultModel.prototype.defaults, {
             // Can't drop other elements inside it
             droppable: false,
@@ -66,8 +93,8 @@ export default (editor, config = {}) => {
                     _hiddenSubmit.setAttribute('type', 'submit');
                     _hiddenSubmit.style.display = 'none';
                     formContainer.prepend(_hiddenSubmit);
-                    
-                    submit.addEventListener('click', function(e){
+
+                    submit.addEventListener('click', function (e) {
                         e.preventDefault();
                         _hiddenSubmit.click();
                     });
@@ -115,14 +142,7 @@ export default (editor, config = {}) => {
     var view = defaultView.extend({
 
         events: {
-            dblclick: 'dblclick',
             click: 'click'
-        },
-
-        timer: null,
-
-        dblclick: function () {
-            window.clearTimeout(this.timer);
         },
 
         click: function (event) {
@@ -142,12 +162,6 @@ export default (editor, config = {}) => {
                 event.stopPropagation();
 
                 editor.select(self.model);
-
-                window.clearTimeout(self.timer);
-
-                self.timer = setTimeout(function () {
-                    editor.runCommand('open-modal', {id: modalId});
-                }, 300);
             }
         },
 
@@ -155,13 +169,22 @@ export default (editor, config = {}) => {
             let model = this.model;
 
             this.listenTo(model, 'change:btnStyle change:btnSize change:attributes', this.updateModal);
-
+        },
+        
+        /**
+         * Trigger when the render is completed
+         */
+        onRender() {
+            // render the button and modal
             this.updateModal();
+
+            // Add the view modal button to the toolbar.
+            this.model.initToolbar();
         },
 
         updateModal: function () {
             const id = this.model.getId();
-            console.log(`Modal plugin => ${id}`);
+
             if (!id) {
                 return;
             }
