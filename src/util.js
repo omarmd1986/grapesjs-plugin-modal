@@ -69,11 +69,17 @@ Util.prototype.isModalOpen = function (id) {
     return (modal.classList.contains('in') && modal.style.display === 'block');
 };
 
-Util.prototype.openModal = function (id) {
-    if(id.charAt(0) === '#'){
+Util.prototype.cleanId = function (id) {
+    if (id.charAt(0) === '#') {
         // Remove the # at the beginning
         id = id.substr(1);
     }
+    return id;
+};
+
+Util.prototype.openModal = function (id) {
+    id = this.cleanId(id);
+
     let modal = this.getElementById(id);
 
     if (!modal) {
@@ -82,7 +88,7 @@ Util.prototype.openModal = function (id) {
     }
 
     var self = this;
-    
+
     var form = modal.getElementsByTagName('form')[0];
 
     if (form) {
@@ -108,6 +114,8 @@ Util.prototype.openModal = function (id) {
 };
 
 Util.prototype.closeModal = function (id) {
+    id = this.cleanId(id);
+
     let modal = this.getElementById(id);
 
     if (!modal) {
@@ -119,6 +127,20 @@ Util.prototype.closeModal = function (id) {
     modal.setAttribute('style', `display: none;`);
 
     console.debug(`Modal ${id} close ups`);
+};
+
+/**
+ * Return all the parents way up
+ * @param {HTMLElement} ele
+ * @returns {Array|Object.prototype.parents.els|Util.prototype.parents.els}
+ */
+Util.prototype.parents = (ele) => {
+    var els = [];
+    while (ele && ele instanceof HTMLElement) {
+        els.push(ele);
+        ele = ele.parentNode || null;
+    }
+    return els;
 };
 
 export let util = new Util();

@@ -1,4 +1,5 @@
 import grapesjs from 'grapesjs';
+import {util as Util} from './util';
 import loadComponents from './components';
 import loadCommands from './commands';
 import loadBlocks from './blocks';
@@ -28,16 +29,28 @@ export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
 
     editor.on('component:selected', (model) => {
         // HTML Element object
-        const el = model.getEl();
+        var el = model.getEl();
 
         let dataToggle = (ele) => (true === ele.hasAttribute('data-toggle') && 'modal' === ele.getAttribute('data-toggle'));
         let dataTarget = (ele) => (true === ele.hasAttribute('data-target') && ele.getAttribute('data-target').startsWith('#'));
 
-        if (false === dataToggle(el) && false === dataTarget(el)) {
-            // Is not a modal trigger
+        var els = Util.parents(el);
+
+        while (els.length) {
+            el = els.shift();
+
+            if (true === dataToggle(el) && true === dataTarget(el)) {
+                // modal trigger found
+                break;
+            }
+            // Clean the modal trigger
+            el = null;
+        }
+
+        if (!el) {
+            // modal trigger not found
             return;
         }
-        
 
         let hasOpenModalCommand = (tbArray) => {
             // Search the open-modal-cmd
@@ -55,7 +68,7 @@ export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
             // The model already has the toolbar command
             return;
         }
-        
+
         const modalId = el.getAttribute('data-target');
 
         tb.push({
