@@ -30,7 +30,7 @@ export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
     editor.on('component:selected', (model) => {
         // HTML Element object
         var el = model.getEl();
-
+        
         let dataToggle = (ele) => (true === ele.hasAttribute('data-toggle') && 'modal' === ele.getAttribute('data-toggle'));
         let dataTarget = (ele) => (true === ele.hasAttribute('data-target') && ele.getAttribute('data-target').startsWith('#'));
 

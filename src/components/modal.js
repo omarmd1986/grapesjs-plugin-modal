@@ -47,10 +47,23 @@ export default (editor, config = {}) => {
                 return;
             }
 
-            const id = el.getAttribute('id');
-            const modalId = `${id}-modal`;
+            let hasOpenModalCommand = (tbArray) => {
+                // Search the open-modal-cmd
+                const f = tbArray.find((i) => {
+                    return (i.attributes && i.attributes.id && 'open-modal-cmd' === i.attributes.id);
+                });
+
+                return (typeof f !== 'undefined');
+            };
 
             var tb = this.get('toolbar');
+
+            if (true === hasOpenModalCommand(tb)) {
+                return;
+            }
+
+            const id = el.getAttribute('id');
+            const modalId = `${id}-modal`;
 
             tb.push({
                 attributes: {class: 'fa fa-external-link', id: 'open-modal-cmd', title: 'Open the link Modal'},
@@ -170,7 +183,7 @@ export default (editor, config = {}) => {
 
             this.listenTo(model, 'change:btnStyle change:btnSize change:attributes', this.updateModal);
         },
-        
+
         /**
          * Trigger when the render is completed
          */
