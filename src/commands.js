@@ -10,6 +10,27 @@ export default (editor, config = {}) => {
             selected.forEach((m) => editor.selectRemove(m));
         }
     });
+    
+    commands.add('delete-modal', {
+        run: function (editor, sender, params) {
+            const id = params.id || null;
+            if (!id) {
+                console.error('The ID is missing');
+                return;
+            }
+            
+            var ele = params.el || null;
+            
+            ele && Util.removeAttr(ele, 'data-target');
+            ele && Util.removeAttr(ele, 'data-toggle');
+        
+            Util.deleteElementById(id);
+            
+            editor.runCommand('un-select-all');
+            
+            return true;
+        }
+    });
 
     commands.add('open-modal', {
         run: function (editor, sender, params) {

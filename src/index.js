@@ -61,22 +61,45 @@ export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
             return (typeof f !== 'undefined');
         };
 
+        let hasDeleteModalCommand = (tbArray) => {
+            // Search the open-modal-cmd
+            const f = tbArray.find((i) => {
+                return (i.attributes && i.attributes.id && 'delete-modal-cmd' === i.attributes.id);
+            });
+
+            return (typeof f !== 'undefined');
+        };
+
         // Is a modal trigger here.
         var tb = model.get('toolbar');
 
-        if (true === hasOpenModalCommand(tb)) {
-            // The model already has the toolbar command
-            return;
+        if (false === hasOpenModalCommand(tb)) {
+            const modalId = el.getAttribute('data-target');
+
+            tb.push({
+                attributes: {class: 'fa fa-external-link', id: 'open-modal-cmd', title: 'Open the link Modal'},
+                command: () => {
+                    editor.runCommand('open-modal', {id: modalId});
+                }
+            });
         }
 
-        const modalId = el.getAttribute('data-target');
+        if (false === hasDeleteModalCommand(tb)) {
+            const modalId = el.getAttribute('data-target');
 
-        tb.push({
-            attributes: {class: 'fa fa-external-link', id: 'open-modal-cmd'},
-            command: () => {
-                editor.runCommand('open-modal', {id: modalId});
-            }
-        });
+            tb.push({
+                attributes: {class: 'fa fa-chain-broken', id: 'delete-modal-cmd', title: 'Unlink the Modal'},
+                command: () => {
+                    if (editor.runCommand('delete-modal', {id: modalId, el: el})) {
+                        // Remove the TB options
+                        let tb = model.get('toolbar');
+                        // Remove the last two cmds
+                        tb.splice(-2, 2);
+                        model.set('toolbar', tb);
+                    }
+                }
+            });
+        }
 
         model.set('toolbar', tb);
     })

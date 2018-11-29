@@ -19,12 +19,17 @@ Util.prototype.getDocument = function () {
  * @returns {NodeElement}
  */
 Util.prototype.getElementById = function (id) {
+    id = this.cleanId(id);
     const doc = this.getDocument();
     if (!doc) {
         console.error(`Document not found`);
         return null;
     }
     return doc.getElementById(id);
+};
+
+Util.prototype.removeAttr = function(ele, attr){
+    ele && ele.removeAttribute(attr);
 };
 
 /**
@@ -37,6 +42,21 @@ Util.prototype.createElement = function (html) {
     template.innerHTML = html.trim();
     return template.content.firstChild;
 };
+
+/**
+ * 
+ * @param {type} id
+ * @returns {unresolved}
+ */
+Util.prototype.deleteElementById = function (id) {
+    id = this.cleanId(id);
+    var elem = this.getElementById(id);
+    console.log(elem)
+    if (elem) {
+        return elem.parentNode.removeChild(elem);
+    }
+    return null;
+}
 
 /**
  * 
