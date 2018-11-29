@@ -53,7 +53,7 @@ export default (editor, config = {}) => {
             var tb = this.get('toolbar');
 
             tb.push({
-                attributes: {class: 'fa fa-external-link', id: 'open-modal-cmd', title: 'Open Modal'},
+                attributes: {class: 'fa fa-external-link', id: 'open-modal-cmd', title: 'Open the link Modal'},
                 command: () => {
                     editor.runCommand('open-modal', {id: modalId});
                 }
