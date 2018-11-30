@@ -21,7 +21,11 @@ export const
         jquery = `https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js`,
         bootstrap = `https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js`,
         style = `
-            modal{position:relative; display: inline;}
+            modal{
+                position:relative;
+                display:inline-block;
+                height: 50px;
+            }
 modal .sr-only {
   position: absolute;
   width: 1px;
@@ -45,6 +49,8 @@ modal [role="button"] {
   cursor: pointer;
 }
 modal .btn {
+  width: 100%;
+  height: -webkit-fill-available;
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
