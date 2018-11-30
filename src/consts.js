@@ -48,9 +48,13 @@ modal .sr-only-focusable:focus {
 modal [role="button"] {
   cursor: pointer;
 }
-modal .btn {
+
+modal > .btn {
   width: 100%;
   height: -webkit-fill-available;
+}
+
+modal .btn {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
