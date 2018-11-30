@@ -79,6 +79,8 @@ export default (editor, config = {}) => {
             // Can't drop other elements inside it
             droppable: false,
             resizable: {
+                step: 0.07,
+                
                 // Unit used for height resizing
                 unitHeight: 'px',
 
@@ -88,7 +90,7 @@ export default (editor, config = {}) => {
                 currentUnit: 0,
 
                 // Minimum dimension
-                minDim: 5,
+                minDim: 10,
 
                 // Maximum dimension
                 maxDim: 100,

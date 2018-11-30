@@ -25,6 +25,7 @@ export const
                 position:relative;
                 display:inline-block;
                 height: 50px;
+                width: 50%;
             }
 modal .sr-only {
   position: absolute;

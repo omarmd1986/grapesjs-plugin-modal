@@ -1,6 +1,6 @@
 {
   "name": "grapesjs-plugin-modal",
-  "version": "0.1.27",
+  "version": "0.1.28",
   "description": "GrapesJS Plugin to create modals",
   "main": "dist/grapesjs-plugin-modal.min.js",
   "scripts": {
