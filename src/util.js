@@ -129,6 +129,8 @@ Util.prototype.openModal = function (id) {
     modal.addEventListener('click', fn);
     modal.setAttribute('class', `modal`);
     modal.setAttribute('style', `display: block;`);
+    // The new version of grapesJs, cause internal elements become unremovable
+    modal.removeAttribute('tabindex');
 
     console.debug(`Modal ${id} pop ups`);
 };
