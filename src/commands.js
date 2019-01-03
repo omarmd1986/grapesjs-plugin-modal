@@ -21,12 +21,24 @@ export default (editor, config = {}) => {
             
             var ele = params.el || null;
             
+            var modal = Util.getElementById(id);
+            
+            if (!modal) {
+                console.error(`Modal ${id} not found`);
+                return;
+            }
+            
+            // Un select all
+            editor.runCommand('un-select-all');
+            // Select the hide modal
+            editor.select(modal);
+            // remove the selected comp
+            editor.runCommand('tlb-delete');
+            // Un select all
+            editor.runCommand('un-select-all');
+            
             ele && Util.removeAttr(ele, 'data-target');
             ele && Util.removeAttr(ele, 'data-toggle');
-        
-            Util.deleteElementById(id);
-            
-            editor.runCommand('un-select-all');
             
             return true;
         }

@@ -43,6 +43,14 @@ export default (model) => {
         return (typeof f !== 'undefined');
     };
 
+    let removeModalsCommands = (tbArray) => {
+        let openIndex = tbArray.findIndex(t => t.attributes && t.attributes.id && 'open-modal-cmd' === t.attributes.id);
+        openIndex >= 0 && tbArray.splice(openIndex, 1);
+        
+        let unlinkIndex = tbArray.findIndex(t => t.attributes && t.attributes.id && 'delete-modal-cmd' === t.attributes.id);
+        unlinkIndex >= 0 && tbArray.splice(unlinkIndex, 1);
+    };
+
     // Is a modal trigger here.
     var tb = model.get('toolbar');
 
@@ -67,7 +75,8 @@ export default (model) => {
                     // Remove the TB options
                     let tb = model.get('toolbar');
                     // Remove the last two cmds
-                    tb.splice(-2, 2);
+                    removeModalsCommands(tb);
+                    // Set the new toolbar.
                     model.set('toolbar', tb);
                 }
             }
