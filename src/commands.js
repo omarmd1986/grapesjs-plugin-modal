@@ -90,7 +90,7 @@ export default (editor, config = {}) => {
     commands.add('create-modal', {
         run: function (editor, sender, params) {
             var model = params.model || null;
-            
+
             if (!model) {
                 console.error('Model missed');
                 return;
@@ -103,32 +103,28 @@ export default (editor, config = {}) => {
                 'data-target': `#${id}`,
                 'data-toggle': 'modal'
             });
-            
+
             editor.runCommand('un-select-all');
-            
-            editor.addComponents(`<style>${config.modalStyle}</style>`);
+
 
             var _modal = Util.createElement(config.modalHtml);
 
-            if (_modal) {
-                _modal.setAttribute('id', id);
-                _modal = Util.toString(_modal);
-                editor.addComponents(_modal);
+            if (!_modal) {
+                return;
             }
-            
+
+            editor.addComponents(`<style>${config.modalStyle}</style>`);
+
+            editor.addComponents(`<script id="grapesjs-modal-jquery" src="${config.modalJquery}">`);
+
+            editor.addComponents(`<script id="grapesjs-modal-bootstrap" src="${config.modalBootstrap}">`);
+
+            _modal.setAttribute('id', id);
+            _modal = Util.toString(_modal);
+            editor.addComponents(_modal);
+
             editor.runCommand('open-modal', {id: id});
 
-//            var $ = editor.$;
-
-//            if (!$('#grapesjs-modal-jquery')) {
-//                editor.addComponents(`<script id="grapesjs-modal-jquery" src="${config.modalJquery}">`);
-//            }
-
-//            if (!$('#grapesjs-modal-bootstrap')) {
-//                editor.addComponents(`<script id="grapesjs-modal-bootstrap" src="${config.modalBootstrap}">`);
-//            }
-            
-            // The cms will add the style for modals and js
         }
     });
 }

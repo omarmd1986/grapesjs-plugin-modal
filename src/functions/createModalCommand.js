@@ -3,10 +3,13 @@ import {util as Util} from '../util';
 export default (model) => {
     // HTML Element object
     var el = model.getEl();
-
+    
+    const c = editor.getConfig();
+    
     // The body dont need to create a modal on it.
     // Inside de modal dont need to create a new modal
-    if (model.is && model.is('modal')) {
+    if ( (c && !c.allowScripts) || (model.is && model.is('modal')) || (model.is && model.is('wrapper'))) {
+        console.warn(`The selected model cannot support the MODAL option or the editor's allowScripts option is disabled`);
         // Dont need to create a new modal
         return;
     }
