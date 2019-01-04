@@ -4,21 +4,7 @@ export default (model) => {
     // HTML Element object
     var el = model.getEl();
 
-    let dataToggle = (ele) => (true === ele.hasAttribute('data-toggle') && 'modal' === ele.getAttribute('data-toggle'));
-    let dataTarget = (ele) => (true === ele.hasAttribute('data-target') && ele.getAttribute('data-target').startsWith('#'));
-
-    var els = Util.parents(el);
-
-    while (els.length) {
-        el = els.shift();
-
-        if (true === dataToggle(el) && true === dataTarget(el)) {
-            // modal trigger found
-            break;
-        }
-        // Clean the modal trigger
-        el = null;
-    }
+    el = Util.modalTrigger(el);
 
     if (!el) {
         // modal trigger not found

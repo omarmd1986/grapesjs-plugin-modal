@@ -28,7 +28,7 @@ Util.prototype.getElementById = function (id) {
     return doc.getElementById(id);
 };
 
-Util.prototype.removeAttr = function(ele, attr){
+Util.prototype.removeAttr = function (ele, attr) {
     ele && ele.removeAttribute(attr);
 };
 
@@ -151,18 +151,88 @@ Util.prototype.closeModal = function (id) {
     console.debug(`Modal ${id} close ups`);
 };
 
+Util.prototype.modalTrigger = function(el) {
+    let dataToggle = (ele) => (true === ele.hasAttribute('data-toggle') && 'modal' === ele.getAttribute('data-toggle'));
+    let dataTarget = (ele) => (true === ele.hasAttribute('data-target') && ele.getAttribute('data-target').startsWith('#'));
+
+    var els = this.parents(el);
+
+    while (els.length) {
+        el = els.shift();
+
+        if (true === dataToggle(el) && true === dataTarget(el)) {
+            // modal trigger found
+            break;
+        }
+        // Clean the modal trigger
+        el = null;
+    }
+    
+    return el;
+};
+
 /**
  * Return all the parents way up
  * @param {HTMLElement} ele
  * @returns {Array|Object.prototype.parents.els|Util.prototype.parents.els}
  */
-Util.prototype.parents = (ele) => {
+Util.prototype.parents = function(ele) {
     var els = [];
     while (ele && ele instanceof HTMLElement) {
         els.push(ele);
         ele = ele.parentNode || null;
     }
     return els;
+};
+
+Util.prototype.test = function() {
+    var forms = Array.from(this.getElementsByTagName('form'));
+    // Form container
+    var formContainer = forms.shift();
+    for (var i = 0; i < forms.length; i++) {
+        forms[i].addEventListener('submit', e => e.preventDefault());
+    }
+    var submits = Array.from(this.getElementsByTagName('button'));
+    // Form container
+    submits = submits.filter(s => s.getAttribute('type') === 'submit');
+    var submit = submits.pop();
+    if (submit && formContainer) {
+        var _hiddenSubmit = document.createElement('button');
+        _hiddenSubmit.setAttribute('type', 'submit');
+        _hiddenSubmit.style.display = 'none';
+        formContainer.prepend(_hiddenSubmit);
+
+        submit.addEventListener('click', function (e) {
+            e.preventDefault();
+            _hiddenSubmit.click();
+        });
+    }
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.onload = function () {
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.onload = function () {
+                    console.debug('Both plugin loaded');
+                };
+                js.src = '{[ bootstrapScript ]}';
+                fjs.parentNode.insertBefore(js, fjs);
+            }(d, 'script', 'grapesjs-modal-bootstrap'));
+        };
+        js.src = '{[ jqueryScript ]}';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'grapesjs-modal-jquery'));
 };
 
 export let util = new Util();

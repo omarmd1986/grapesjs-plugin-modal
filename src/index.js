@@ -4,7 +4,8 @@ import loadComponents from './components';
 import loadCommands from './commands';
 import loadBlocks from './blocks';
 import addOpenCommand from './functions/addOpenCommand';
-import {style, modal, jquery, bootstrap, micromodal} from './consts';
+import createModalCommand from './functions/createModalCommand';
+import {style, modal, jquery, bootstrap} from './consts';
 
 export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
     const options = {...{
@@ -29,4 +30,6 @@ export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
     loadBlocks(editor, options);
 
     editor.on('component:selected', addOpenCommand);
+    
+    editor.on('component:selected', createModalCommand);
 });

@@ -10,7 +10,7 @@ export default (editor, config = {}) => {
             selected.forEach((m) => editor.selectRemove(m));
         }
     });
-    
+
     commands.add('delete-modal', {
         run: function (editor, sender, params) {
             const id = params.id || null;
@@ -18,16 +18,16 @@ export default (editor, config = {}) => {
                 console.error('The ID is missing');
                 return;
             }
-            
+
             var ele = params.el || null;
-            
+
             var modal = Util.getElementById(id);
-            
+
             if (!modal) {
                 console.error(`Modal ${id} not found`);
                 return;
             }
-            
+
             // Un select all
             editor.runCommand('un-select-all');
             // Select the hide modal
@@ -36,10 +36,10 @@ export default (editor, config = {}) => {
             editor.runCommand('tlb-delete');
             // Un select all
             editor.runCommand('un-select-all');
-            
+
             ele && Util.removeAttr(ele, 'data-target');
             ele && Util.removeAttr(ele, 'data-toggle');
-            
+
             return true;
         }
     });
@@ -84,6 +84,51 @@ export default (editor, config = {}) => {
             editor.runCommand('un-select-all');
 
             return true;
+        }
+    });
+
+    commands.add('create-modal', {
+        run: function (editor, sender, params) {
+            var model = params.model || null;
+            
+            if (!model) {
+                console.error('Model missed');
+                return;
+            }
+
+            const time = new Date().getTime();
+            const id = model.getId() + `${time}`;
+
+            model.addAttributes({
+                'data-target': `#${id}`,
+                'data-toggle': 'modal'
+            });
+            
+            editor.runCommand('un-select-all');
+            
+            editor.addComponents(`<style>${config.modalStyle}</style>`);
+
+            var _modal = Util.createElement(config.modalHtml);
+
+            if (_modal) {
+                _modal.setAttribute('id', id);
+                _modal = Util.toString(_modal);
+                editor.addComponents(_modal);
+            }
+            
+            editor.runCommand('open-modal', {id: id});
+
+//            var $ = editor.$;
+
+//            if (!$('#grapesjs-modal-jquery')) {
+//                editor.addComponents(`<script id="grapesjs-modal-jquery" src="${config.modalJquery}">`);
+//            }
+
+//            if (!$('#grapesjs-modal-bootstrap')) {
+//                editor.addComponents(`<script id="grapesjs-modal-bootstrap" src="${config.modalBootstrap}">`);
+//            }
+            
+            // The cms will add the style for modals and js
         }
     });
 }
