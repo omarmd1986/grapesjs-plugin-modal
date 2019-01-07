@@ -114,10 +114,12 @@ export default (editor, config = {}) => {
             }
 
             editor.addComponents(`<style>${config.modalStyle}</style>`);
+            
+            const w = editor.Canvas.getWindow();
+            
+            typeof w.jQuery === 'undefined' && editor.addComponents(`<script id="grapesjs-modal-jquery" src="${config.modalJquery}">`);
 
-            editor.addComponents(`<script id="grapesjs-modal-jquery" src="${config.modalJquery}">`);
-
-            editor.addComponents(`<script id="grapesjs-modal-bootstrap" src="${config.modalBootstrap}">`);
+            (typeof w.jQuery === 'undefined' || typeof(w.jQuery.fn.popover) === 'undefined') && editor.addComponents(`<script id="grapesjs-modal-bootstrap" src="${config.modalBootstrap}">`);
 
             _modal.setAttribute('id', id);
             _modal = Util.toString(_modal);
