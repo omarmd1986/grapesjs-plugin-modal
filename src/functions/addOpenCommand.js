@@ -1,6 +1,6 @@
 import {util as Util} from '../util';
 
-export default (model) => {
+export default (editor, model) => {
     // HTML Element object
     var el = model.getEl();
 
@@ -10,7 +10,8 @@ export default (model) => {
         // modal trigger not found
         return;
     }
-
+    // the editor is showing an error, the editor.getConfig is undefined.
+    // find the way to get the editor... or pass it as a parameter.
     let hasOpenModalCommand = (tbArray) => {
         // Search the open-modal-cmd
         const f = tbArray.find((i) => {
@@ -32,7 +33,7 @@ export default (model) => {
     let removeModalsCommands = (tbArray) => {
         let openIndex = tbArray.findIndex(t => t.attributes && t.attributes.id && 'open-modal-cmd' === t.attributes.id);
         openIndex >= 0 && tbArray.splice(openIndex, 1);
-        
+
         let unlinkIndex = tbArray.findIndex(t => t.attributes && t.attributes.id && 'delete-modal-cmd' === t.attributes.id);
         unlinkIndex >= 0 && tbArray.splice(unlinkIndex, 1);
     };

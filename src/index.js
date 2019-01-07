@@ -29,7 +29,7 @@ export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
     // Add blocks
     loadBlocks(editor, options);
 
-    editor.on('component:selected', addOpenCommand);
+    editor.on('component:selected', m => addOpenCommand(editor, m));
     
-    editor.on('component:selected', createModalCommand);
+    editor.on('component:selected', m => createModalCommand(editor, m));
 });
