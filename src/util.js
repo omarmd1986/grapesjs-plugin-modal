@@ -209,31 +209,31 @@ Util.prototype.test = function () {
     }
 
     (function (d, s, id) {
-        var loadModal = function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id) || typeof jQuery.fn.Modal !== 'undefined') {
+        var loadModal = function (d, sinbling, id) {
+            if (d.getElementById(id) && typeof jQuery.fn.modal !== 'undefined') {
                 return;
             }
-            js = d.createElement(s);
+            var js = d.createElement(s);
             js.id = id;
-            js.onload = function () {
-                console.debug('Both plugin loaded');
-            };
             js.src = '{[ bootstrapScript ]}';
-            fjs.parentNode.insertBefore(js, fjs);
+            sinbling.parentNode.insertBefore(js, sinbling);
         };
 
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id) || typeof jQuery !== 'undefined') {
-            return loadModal(d, s, 'grapesjs-modal-bootstrap');
+        var jqueryNode = d.getElementById(id);
+        if (!jqueryNode && typeof jQuery === 'undefined') {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            js = d.createElement(s);
+            js.id = 'grapesjs-modal-jquery';
+            js.src = '{[ jqueryScript ]}';
+            js.onload = function () {
+                loadModal(d, js, 'grapesjs-modal-bootstrap');
+            };
+            fjs.parentNode.insertBefore(js, fjs);
         }
-        js = d.createElement(s);
-        js.id = id;
-        js.onload = function () {
-            loadModal(d, s, 'grapesjs-modal-bootstrap');
-        };
-        js.src = '{[ jqueryScript ]}';
-        fjs.parentNode.insertBefore(js, fjs);
+
+        if (typeof jQuery !== 'undefined') {
+            loadModal(d, d.body, 'grapesjs-modal-bootstrap')
+        }
     }(document, 'script', 'grapesjs-modal-jquery'));
 };
 
