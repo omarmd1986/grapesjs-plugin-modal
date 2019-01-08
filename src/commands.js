@@ -116,11 +116,13 @@ export default (editor, config = {}) => {
 
             const w = editor.Canvas.getWindow();
 
-            if (typeof w.jQuery === 'undefined') {
-                editor.addComponents(`<script id="grapesjs-modal-jquery" src="${config.modalJquery}">`);
-                editor.addComponents(`<script id="grapesjs-modal-bootstrap" src="${config.modalBootstrap}">`);
-            } else {
-                typeof w.jQuery.fn.modal === 'undefined' && editor.addComponents(`<script id="grapesjs-modal-bootstrap" src="${config.modalBootstrap}">`);
+            if (config.includeExternalLinks) {
+                if (typeof w.jQuery === 'undefined') {
+                    editor.addComponents(`<script id="grapesjs-modal-jquery" src="${config.modalJquery}">`);
+                    editor.addComponents(`<script id="grapesjs-modal-bootstrap" src="${config.modalBootstrap}">`);
+                } else {
+                    typeof w.jQuery.fn.modal === 'undefined' && editor.addComponents(`<script id="grapesjs-modal-bootstrap" src="${config.modalBootstrap}">`);
+                }
             }
 
             _modal.setAttribute('id', id);

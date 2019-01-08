@@ -116,6 +116,7 @@ export default (editor, config = {}) => {
 
             'bootstrapScript': config.modalBootstrap,
             'jqueryScript': config.modalJquery,
+            'includeExternalLinks': config.includeExternalLinks,
             
             script: Util.test
 //            script: function () {

@@ -12,6 +12,8 @@ export default grapesjs.plugins.add('gjs-modal', (editor, opts = {}) => {
                 category: `Advanced`,
 
                 modalStyle: `<style>${style}</style>`,
+                
+                includeExternalLinks: true,
 
                 modalHtml: `${modal}`,
 

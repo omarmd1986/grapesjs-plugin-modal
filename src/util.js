@@ -208,7 +208,9 @@ Util.prototype.test = function () {
         });
     }
 
-    (function (d, s, id) {
+    var includeExternalLinks = Boolean('{[ includeExternalLinks ]}');
+
+    includeExternalLinks && (function (d, s, id) {
         var loadModal = function (d, sinbling, id) {
             if (d.getElementById(id) && typeof jQuery.fn.modal !== 'undefined') {
                 return;
