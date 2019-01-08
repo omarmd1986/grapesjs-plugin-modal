@@ -151,7 +151,7 @@ Util.prototype.closeModal = function (id) {
     console.debug(`Modal ${id} close ups`);
 };
 
-Util.prototype.modalTrigger = function(el) {
+Util.prototype.modalTrigger = function (el) {
     let dataToggle = (ele) => (true === ele.hasAttribute('data-toggle') && 'modal' === ele.getAttribute('data-toggle'));
     let dataTarget = (ele) => (true === ele.hasAttribute('data-target') && ele.getAttribute('data-target').startsWith('#'));
 
@@ -167,7 +167,7 @@ Util.prototype.modalTrigger = function(el) {
         // Clean the modal trigger
         el = null;
     }
-    
+
     return el;
 };
 
@@ -176,7 +176,7 @@ Util.prototype.modalTrigger = function(el) {
  * @param {HTMLElement} ele
  * @returns {Array|Object.prototype.parents.els|Util.prototype.parents.els}
  */
-Util.prototype.parents = function(ele) {
+Util.prototype.parents = function (ele) {
     var els = [];
     while (ele && ele instanceof HTMLElement) {
         els.push(ele);
@@ -185,7 +185,7 @@ Util.prototype.parents = function(ele) {
     return els;
 };
 
-Util.prototype.test = function() {
+Util.prototype.test = function () {
     var forms = Array.from(this.getElementsByTagName('form'));
     // Form container
     var formContainer = forms.shift();
@@ -209,26 +209,28 @@ Util.prototype.test = function() {
     }
 
     (function (d, s, id) {
+        var loadModal = function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id) || typeof jQuery.fn.Modal !== 'undefined') {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.onload = function () {
+                console.debug('Both plugin loaded');
+            };
+            js.src = '{[ bootstrapScript ]}';
+            fjs.parentNode.insertBefore(js, fjs);
+        };
+
         var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-            return;
+        if (d.getElementById(id) || typeof jQuery !== 'undefined') {
+            return loadModal(d, s, 'grapesjs-modal-bootstrap');
         }
         js = d.createElement(s);
         js.id = id;
         js.onload = function () {
-            (function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) {
-                    return;
-                }
-                js = d.createElement(s);
-                js.id = id;
-                js.onload = function () {
-                    console.debug('Both plugin loaded');
-                };
-                js.src = '{[ bootstrapScript ]}';
-                fjs.parentNode.insertBefore(js, fjs);
-            }(d, 'script', 'grapesjs-modal-bootstrap'));
+            loadModal(d, s, 'grapesjs-modal-bootstrap');
         };
         js.src = '{[ jqueryScript ]}';
         fjs.parentNode.insertBefore(js, fjs);
