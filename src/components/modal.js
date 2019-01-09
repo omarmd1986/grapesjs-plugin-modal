@@ -114,14 +114,10 @@ export default (editor, config = {}) => {
             btnStyle: 'btn-primary',
             btnSize: 'btn-lg',
 
-            'bootstrapScript': config.modalBootstrap,
-            'jqueryScript': config.modalJquery,
-            'includeExternalLinks': config.includeExternalLinks,
-            
-            script: Util.test
-//            script: function () {
-
-//            }
+            /**
+             * Just to create an ID.
+             */
+            script: () => console.log('Modal button created')
         })
     }, {
         isComponent(el) {
@@ -162,6 +158,7 @@ export default (editor, config = {}) => {
         },
 
         init: function () {
+            console.log('init')
             let model = this.model;
 
             this.listenTo(model, 'change:btnStyle change:btnSize change:attributes', this.updateModal);
